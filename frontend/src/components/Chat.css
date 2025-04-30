@@ -1,0 +1,142 @@
+/* Main container */
+.app-container {
+    display: flex;
+    height: 100vh; /* Full screen height */
+  }
+  
+  /* Sidebar styles */
+  .sidebar {
+    width: 15%; /* Sidebar takes up 25% of the screen width */
+    height: 100vh; /* Full screen height */
+    background-color: #f0f4f8; /* Light background for sidebar */
+    padding: 16px;
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    text-align: right; /* Align user names to the right in the sidebar */
+  }
+  
+  .sidebar h2 {
+    text-align: right; /* Ensure the title is aligned to the right as well */
+  }
+  
+  /* Chat window styles */
+  .chat-window {
+    width: 85%; /* Chat window takes up the remaining 75% of the screen width */
+    height: 95vh; /* Full screen height */
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    background-image: url("https://media.istockphoto.com/id/1177595975/vector/horizontal-grunge-grungy-vector-illustration-of-an-empty-smudged-blue-colored-textured.jpg?s=612x612&w=0&k=20&c=L8XvUl8uYy0WNPtJECdX3GAjyibGYLkVwXVb88NNX88=");
+    background-size: cover;
+    background-position: center;
+  }
+  
+  /* Chat header */
+  .chat-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #333;
+  }
+  
+  /* Chat messages container */
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    padding-right: 8px;
+  }
+  
+  /* Individual message styles */
+  .message {
+    padding: 8px;
+    margin: 10px;
+    border-radius: 8px;
+    max-width: 70%;
+    word-wrap: break-word;
+  }
+  
+  .message-sent {
+    align-self: flex-end;
+    background-color: #bfdbfe; /* Light blue */
+  }
+  
+  .message-received {
+    align-self: flex-start;
+    background-color: #d1d5db; /* Light gray */
+  }
+  
+  /* Message sender style */
+  .message-sender {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  
+  /* Chat input container */
+  .chat-input {
+    display: flex;
+  }
+  
+  .chat-input input {
+    flex: 1;
+    border: 1px solid #ccc;
+    padding: 12px;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    outline: none;
+  }
+  
+  .chat-input button {
+    background-color: #3b82f6; /* Blue */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    transition: background 0.3s;
+  }
+  
+  .chat-input button:hover {
+    background-color: #2563eb; /* Darker blue */
+  }
+  
+  .file-label {
+    background-color: #e2e8f0;
+    padding: 0.5rem 0.75rem;
+    margin-right: 0.5rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    font-weight: bold;
+    color: #333;
+    transition: background 0.2s;
+  }
+  .file-label:hover {
+    background-color: #cbd5e0;
+  }
+  
+  .emoji-button {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-left: 0.5rem;
+  }
+  
+  .emoji-picker {
+    position: absolute;
+    bottom: 60px;
+    left: 20px;
+    z-index: 100;
+  }
+  
+  .chat-input {
+    position: relative;
+  }
+  
+  
