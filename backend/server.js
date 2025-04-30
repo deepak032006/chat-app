@@ -37,6 +37,15 @@ app.use(express.json());
 // Public folders
 app.use(express.static(path.join(__dirname, 'public')));
 
+// ---------------------------
+// Serve frontend from build/
+// ---------------------------
+app.use(express.static(path.join(__dirname, 'client', 'build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoutes);
