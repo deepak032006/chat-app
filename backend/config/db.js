@@ -2,13 +2,12 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
     try {
-        const dbname = process.env.dbname; // example: "chit-chat"
-        const mongoURI = `mongodb://127.0.0.1:27017/${dbname}`;
+        const dbname = process.env.dbname; // e.g., "chit-chat"
+        
+        // MongoDB Atlas connection string (replace with your own values)
+        const mongoURI = process.env.MONGO_URI || `mongodb+srv://<username>:<password>@<cluster-name>.mongodb.net/${dbname}?retryWrites=true&w=majority`;
 
-        await mongoose.connect(mongoURI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
+        await mongoose.connect(mongoURI);
 
         console.log(`✅ MongoDB connected: ${dbname}`);
     } catch (err) {
