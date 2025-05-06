@@ -2,7 +2,8 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../modals/auth.modal.js');
 
-const BASE_URL = import.meta.env.MODE ==="development"?'http://localhost:5000':"/api";
+const BASE_URL = process.env.NODE_ENV === "development" ? 'http://localhost:5000' : "/api";
+
 
 const register = async (req, res) => {
     const { username, email, password } = req.body;
