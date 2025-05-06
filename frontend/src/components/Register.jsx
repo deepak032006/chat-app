@@ -16,7 +16,8 @@ const Register = ({ setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/register', formData);
+      await axios.post('https://chat-app-22-z9h4.onrender.com/api/auth/register', formData);
+
       setMessage('✅ Registered successfully!');
     } catch (err) {
       setMessage(err.response?.data?.message || '❌ Registration failed');

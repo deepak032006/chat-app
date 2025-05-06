@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 
-const instance = axios.create({
-    baseURL: import.meta.env.MODE ==="development"?'http://localhost:5000':"/api",
-    withCredentials:true    
-  });
+const axiosInstance = axios.create({
+  baseURL: "https://chat-app-22-z9h4.onrender.com/api", // Render URL + your API base path
+  withCredentials: true, // Agar cookies/session use ho rahi ho
+});
 
-  export default instance
+export default axiosInstance;
