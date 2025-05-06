@@ -28,14 +28,14 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
 //   const dirPath = path.resolve();
-//   app.use(express.static(path.join(dirPath, 'frontend', 'dist')));
+  app.use(express.static(path.join(__dirPath, "../frontend/dist")));
 
-//   app.get('*', (req, res) => {
-//     res.sendFile(path.join(dirPath, 'frontend', 'dist', 'index.html'));
-//   });
-// }
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(dirPath, "../frontend", 'dist', 'index.html'));
+  });
+}
 
 // ============================
 // Middleware Setup
