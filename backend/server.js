@@ -1,3 +1,4 @@
+// server.js (or index.js)
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -5,10 +6,10 @@ const http = require('http');
 const { Server } = require('socket.io');
 const session = require('express-session');
 const passport = require('passport');
+const User = require('./modals/auth.modal.js');
 require('dotenv').config();
-require('./config/passport.js'); // Google Strategy config
+require('./config/passport.js');
 
-// Import routes
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth.router.js');
 const messageRoutes = require('./routes/messageRoutes.js');
@@ -17,9 +18,6 @@ const UserRouters = require('./routes/User.router.js');
 const app = express();
 connectDB();
 
-// ===================================
-// 🔐 Session & Passport Configuration
-// ===================================
 app.use(session({
   secret: process.env.JWT_SECRET,
   resave: false,
@@ -28,40 +26,18 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-if (process.env.NODE_ENV === 'production') {
-//   const dirPath = path.resolve();
-  app.use(express.static(path.join(__dirPath, "../frontend/dist")));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(dirPath, "../frontend", 'dist', 'index.html'));
-  });
-}
-
-// ============================
-// Middleware Setup
-// ============================
 app.use(cors());
 app.use(express.json());
-
-// Public folders
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ---------------------------
-// Serve frontend from build/
-// --------------------------
-
-// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/users', UserRouters);
 
-// =====================
-// Socket.IO Setup Logic
-// =====================
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: 'http://localhost:5173', // Your frontend origin
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -70,19 +46,33 @@ const io = new Server(server, {
 let users = [];
 
 io.on('connection', (socket) => {
-  console.log('✅ A user connected:', socket.id);
+  console.log('✅ User connected:', socket.id);
 
-  socket.on('join', (username) => {
-    socket.username = username;
-    const existingUser = users.find((u) => u.username === username);
-    if (!existingUser) {
-      users.push({ username, socketId: socket.id, isOnline: true });
-    } else {
-      existingUser.socketId = socket.id;
-      existingUser.isOnline = true;
-    }
-    io.emit('users_list', users);
-  });
+  socket.on('join', async (username) => {
+  socket.username = username;
+  let user = await User.findOne({ username });
+
+  if (!user) return;
+
+  const existingUser = users.find((u) => u.username === username);
+  const userInfo = {
+    username,
+    socketId: socket.id,
+    isOnline: true,
+    avatar: user.avatar, // include avatar
+  };
+
+  if (!existingUser) {
+    users.push(userInfo);
+  } else {
+    existingUser.socketId = socket.id;
+    existingUser.isOnline = true;
+    existingUser.avatar = user.avatar;
+  }
+
+  io.emit('users_list', users);
+});
+
 
   socket.on('send_message', (message) => {
     const recipient = users.find((u) => u.username === message.to);
@@ -108,7 +98,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     users = users.filter((u) => u.socketId !== socket.id);
     io.emit('users_list', users);
-    console.log('❌ A user disconnected:', socket.id);
+    console.log('❌ User disconnected:', socket.id);
   });
 
   socket.on('get_users', () => {
@@ -116,8 +106,5 @@ io.on('connection', (socket) => {
   });
 });
 
-// ================
-// Start the Server
-// ================
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

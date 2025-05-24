@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Login from './Login';
-import GoogleLogin from './GoogleLogin';  // Add GoogleLogin import
+import GoogleLogin from './GoogleLogin';
 
 const Register = ({ setUser }) => {
   const [formData, setFormData] = useState({ username: '', email: '', password: '' });
+  const [avatar, setAvatar] = useState(null);
   const [message, setMessage] = useState('');
   const [isRegistering, setIsRegistering] = useState(true);
 
@@ -13,10 +14,23 @@ const Register = ({ setUser }) => {
     setMessage('');
   };
 
+  const handleFileChange = (e) => {
+    setAvatar(e.target.files[0]);
+    setMessage('');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://chat-app-22-z9h4.onrender.com/api/auth/register', formData);
+      const form = new FormData();
+      form.append('username', formData.username);
+      form.append('email', formData.email);
+      form.append('password', formData.password);
+      if (avatar) form.append('avatar', avatar);
+
+      await axios.post('http://localhost:5000/api/auth/register', form, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
 
       setMessage('✅ Registered successfully!');
     } catch (err) {
@@ -45,10 +59,11 @@ const Register = ({ setUser }) => {
         {isRegistering ? (
           <>
             <h2 style={styles.title}>Create an Account</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
               <input name="username" type="text" placeholder="Username" value={formData.username} onChange={handleChange} required style={styles.input} />
               <input name="email" type="email" placeholder="Email" value={formData.email} onChange={handleChange} required style={styles.input} />
               <input name="password" type="password" placeholder="Password" value={formData.password} onChange={handleChange} required style={styles.input} />
+              <input name="avatar" type="file" accept="image/*" onChange={handleFileChange} style={styles.input} />
               <button type="submit" style={styles.button}>Register</button>
               {message && <p style={{ color: message.includes('✅') ? 'green' : 'red', marginTop: '10px' }}>{message}</p>}
             </form>
@@ -56,8 +71,7 @@ const Register = ({ setUser }) => {
         ) : (
           <Login setUser={setUser} />
         )}
-        
-        {/* Add Google Login button here */}
+
         <GoogleLogin />
       </div>
     </div>

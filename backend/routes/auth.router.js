@@ -1,11 +1,12 @@
 const express = require('express');
 const passport = require('passport');
 const { register, login } = require('../controller/auth.controller.js');
+const upload = require('../middlewares/upload.middleware.js');
 
 const router = express.Router();
 
 // Normal login/register
-router.post('/register', register);
+router.post('/register', upload.single('avatar'), register);
 router.post('/login', login);
 
 // routes/auth.router.js

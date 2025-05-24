@@ -1,80 +1,66 @@
-/* Sidebar styles */
+/* Sidebar container */
 .sidebar {
-  position: relative;
+  background-color: #ededed;
+  width: 15%;
+  height: 100vh;
+  border-right: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
   padding: 1rem;
-  background-color: #f4f4f4;
-  height: 100%;
-  width: 250px;
-  border-right: 1px solid #e0e0e0;
 }
 
-.sidebar h2 {
-  font-size: 1.25rem;
-  color: #4a4a4a;
-  margin-bottom: 1.5rem;
-}
-
+/* User card */
 .user-card {
   display: flex;
-  justify-content: space-between;
-  padding: 0.75rem;
-  background-color: #fff;
+  align-items: center;            /* Keep avatar and text side by side */
+  gap: 12px;
+  padding: 12px;
+  background-color: #ffffff;
   border-radius: 8px;
-  margin-bottom: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-}
-
-.user-card:hover {
-  background-color: #f1f1f1;
-}
-
-.status-indicator {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-right: 0.5rem;
-}
-
-.status-online {
-  background-color: #00ff00;
-}
-
-.status-offline {
-  background-color: #ff0000;
-}
-
-.typing-indicator {
-  color: #888;
-  font-size: 0.875rem;
-}
-
-.user-status-text {
-  font-size: 0.875rem;
-  color: #555;
-}
-
-.logout-button-container {
-  position: absolute;
-  bottom: 1rem;
-  left: 0;
-  right: 0;
-  padding: 0 1rem;
-  margin-top: auto;
-}
-
-.logout-button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #f44336;
-  color: white;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
+  margin-bottom: 12px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.logout-button:hover {
-  background-color: #e53935;
+.user-card:hover {
+  background-color: #f5f5f5;
+}
+
+/* Avatar styling */
+.user-card img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+/* Username */
+.username {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Status indicator */
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 8px;
+}
+
+.status-online {
+  background-color: #25d366; /* WhatsApp green */
+}
+
+.status-offline {
+  background-color: #ccc;
+}
+
+/* Typing or online text */
+.typing-indicator {
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 2px;
 }

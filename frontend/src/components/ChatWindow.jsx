@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import socket from "../socket.js";
 import './Chat.css';
 import EmojiPicker from 'emoji-picker-react';
@@ -6,9 +6,11 @@ import EmojiPicker from 'emoji-picker-react';
 function ChatWindow({ selectedUser, user }) {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
-  const [typingTimeout, setTypingTimeout] = useState(null); // To manage typing timeout
+  const [typingTimeout, setTypingTimeout] = useState(null);
   const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [avatar, setAvatar] = useState(user.avatar || "/avatars/default.png");
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     setMessages([]);
@@ -23,18 +25,6 @@ function ChatWindow({ selectedUser, user }) {
     };
 
     socket.on("receive_message", receiveHandler);
-    socket.on("receive_file", (fileData) => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: fileData.sender,
-          text: "File received: " + fileData.fileName,
-          file: fileData.fileName,
-          fileUrl: fileData.fileUrl,
-          time: fileData.time || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        },
-      ]);
-    });
 
     socket.on("messages_seen", ({ from }) => {
       setMessages((prev) =>
@@ -48,7 +38,6 @@ function ChatWindow({ selectedUser, user }) {
 
     return () => {
       socket.off("receive_message", receiveHandler);
-      socket.off("receive_file");
       socket.off("messages_seen");
     };
   }, [selectedUser, user.username]);
@@ -61,7 +50,7 @@ function ChatWindow({ selectedUser, user }) {
       sender: user.username,
       to: selectedUser,
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      seen: false
+      seen: false,
     };
 
     socket.emit("send_message", newMessage);
@@ -81,20 +70,35 @@ function ChatWindow({ selectedUser, user }) {
   const handleTyping = () => {
     socket.emit("typing", { sender: user.username, to: selectedUser });
 
-    // Clear the existing timeout (if there's any)
-    if (typingTimeout) {
-      clearTimeout(typingTimeout);
-    }
+    if (typingTimeout) clearTimeout(typingTimeout);
 
-    // Set a new timeout for stopping typing after 2 seconds
     setTypingTimeout(setTimeout(() => {
       socket.emit("stop_typing", { sender: user.username, to: selectedUser });
-    }, 2000)); // 2 seconds delay
+    }, 2000));
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      sendMessage();
+    if (e.key === "Enter") sendMessage();
+  };
+
+  const toggleMenu = () => {
+    setMenuVisible((prev) => !prev);
+  };
+
+  const handleChangeAvatarClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatar(reader.result); // Base64 preview
+        // In real app: upload file to server and update user.avatar URL
+        setMenuVisible(false);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -108,21 +112,54 @@ function ChatWindow({ selectedUser, user }) {
 
   return (
     <div className="chat-window">
-      <div className="chat-header">Chat with {selectedUser}</div>
+      <div className="chat-header">
+        <div className="chat-username">{selectedUser}</div>
+        <div className="menu-container">
+          <button className="menu-button" onClick={toggleMenu}>
+            &#x22EE;
+          </button>
+          {menuVisible && (
+            <div className="menu-dropdown">
+              <div className="user-info">
+                <img
+                  src={avatar}
+                  alt="User Avatar"
+                  className="user-avatar"
+                />
+                <div className="user-email">{user.email || "No email"}</div>
+              </div>
+              <button
+                className="change-avatar-button"
+                onClick={handleChangeAvatarClick}
+              >
+                Change Avatar
+              </button>
+              <input
+                type="file"
+                ref={fileInputRef}
+                style={{ display: "none" }}
+                accept="image/*"
+                onChange={handleAvatarChange}
+              />
+            </div>
+          )}
+        </div>
+      </div>
 
       <div className="chat-messages">
         {messages.map((msg, idx) => (
           <div
             key={idx}
-            className={`message ${msg.sender === user.username ? "message-sent" : "message-received"}`}
+            className={`message ${
+              msg.sender === user.username ? "message-sent" : "message-received"
+            }`}
           >
-            <div className="message-sender">
-              {msg.sender === user.username ? "You" : msg.sender}
-            </div>
-            <div>{msg.text}</div>
-            <div className="text-xs text-gray-400 mt-1">
-              {msg.time}
-              {msg.sender === user.username && msg.seen && " • Seen"}
+            <div className="message-content-time">
+              <span className="message-text">{msg.text}</span>
+              <span className="message-time">
+                {msg.time}
+                {msg.sender === user.username && msg.seen && " • Seen"}
+              </span>
             </div>
           </div>
         ))}

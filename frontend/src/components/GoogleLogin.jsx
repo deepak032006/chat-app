@@ -2,8 +2,7 @@ import React from "react";
 
 function GoogleLogin() {
   const handleLogin = () => {
-    window.location.href = 'https://chat-app-22-z9h4.onrender.com/api/auth/google';
-
+    window.location.href = 'http://localhost:5000/api/auth/google';
   };
 
   return (
@@ -19,9 +18,18 @@ function GoogleLogin() {
         cursor: "pointer",
         width: "100%",
         marginTop: "1rem", // Ensure some margin is added to prevent overlap
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "10px"
       }}
     >
-      🔒 Sign in with Google
+      <img
+        src="https://crystalpng.com/wp-content/uploads/2025/05/google-logo.png"
+        alt="Google icon"
+        style={{ width: "18px", height: "18px" }}
+      />
+      Sign in with Google
     </button>
   );
 }
