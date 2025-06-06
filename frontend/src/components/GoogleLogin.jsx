@@ -2,7 +2,7 @@ import React from "react";
 
 function GoogleLogin() {
   const handleLogin = () => {
-    window.location.href = 'https://chat-app-23-2tzv.onrender.com/api/auth/google';
+    window.location.href = 'https://chat-app-forever-chal.onrender.com/api/auth/google';
   };
 
   return (
