@@ -2,7 +2,7 @@ import React from "react";
 
 function GoogleLogin() {
   const handleLogin = () => {
-    window.location.href = 'https://chat-app-25-m3vu.onrender.com/api/auth/google',"_self";
+    window.location.href = 'https://chat-app-25-m3vu.onrender.com/api/auth/google';
   };
 
   return (
@@ -17,7 +17,7 @@ function GoogleLogin() {
         fontSize: "14px",
         cursor: "pointer",
         width: "100%",
-        marginTop: "1rem", // Ensure some margin is added to prevent overlap
+        marginTop: "1rem",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
