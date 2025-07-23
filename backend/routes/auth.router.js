@@ -15,7 +15,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    failureRedirect: 'http://localhost:5173/login',
+    failureRedirect: 'https://chat-app-zbef.vercel.app/login',
     session: true,
   }),
   (req, res) => {
@@ -26,7 +26,7 @@ router.get(
     };
 
     // Redirect user to frontend with user data as query
-    res.redirect(`http://localhost:5173?user=${encodeURIComponent(JSON.stringify(user))}`);
+    res.redirect(`https://chat-app-zbef.vercel.app?user=${encodeURIComponent(JSON.stringify(user))}`);
   }
 );
 
