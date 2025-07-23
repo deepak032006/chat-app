@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000/api", // Render URL + your API base path
+  baseURL: "https://chat-app-25-m3vu.onrender.com/api", // Render URL + your API base path
   withCredentials: true, // Agar cookies/session use ho rahi ho
 });
 

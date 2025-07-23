@@ -2,7 +2,7 @@ import React from "react";
 
 function GoogleLogin() {
   const handleLogin = () => {
-    window.location.href = 'http://localhost:5000/api/auth/google';
+    window.location.href = 'https://chat-app-25-m3vu.onrender.com/api/auth/google';
   };
 
   return (

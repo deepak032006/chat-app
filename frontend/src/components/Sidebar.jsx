@@ -48,7 +48,7 @@ function Sidebar({ onSelectUser, user, onLogout }) {
               className="user-card flex-none w-24 flex flex-col items-center p-2 cursor-pointer hover:bg-gray-200 rounded-lg transition"
             >
               <img
-                src={`http://localhost:5000${u.avatar || '/avatars/default.png'}`}
+                src={`https://chat-app-25-m3vu.onrender.com${u.avatar || '/avatars/default.png'}`}
                 alt="avatar"
                 className="w-12 h-12 rounded-full object-cover mb-1"
               />
