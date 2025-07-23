@@ -94,8 +94,7 @@ function ChatWindow({ selectedUser, user }) {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setAvatar(reader.result); // Base64 preview
-        // In real app: upload file to server and update user.avatar URL
+        setAvatar(reader.result);
         setMenuVisible(false);
       };
       reader.readAsDataURL(file);
@@ -104,7 +103,7 @@ function ChatWindow({ selectedUser, user }) {
 
   if (!selectedUser) {
     return (
-      <div className="w-3/4 h-screen flex items-center justify-center text-gray-500">
+      <div className="w-full h-full flex items-center justify-center text-gray-500">
         Select a user to start chatting
       </div>
     );
@@ -116,7 +115,7 @@ function ChatWindow({ selectedUser, user }) {
         <div className="chat-username">{selectedUser}</div>
         <div className="menu-container">
           <button className="menu-button" onClick={toggleMenu}>
-            &#x22EE;
+            ⋮
           </button>
           {menuVisible && (
             <div className="menu-dropdown">

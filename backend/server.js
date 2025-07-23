@@ -37,42 +37,48 @@ app.use('/api/users', UserRouters);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173', // Your frontend origin
+    origin: 'http://localhost:5173', 
     methods: ['GET', 'POST'],
     credentials: true,
   },
 });
-
 let users = [];
 
 io.on('connection', (socket) => {
   console.log('✅ User connected:', socket.id);
 
+  
+  socket.on('ping_server', () => {
+
+  });
+
   socket.on('join', async (username) => {
-  socket.username = username;
-  let user = await User.findOne({ username });
+    if (!username) return;
 
-  if (!user) return;
+    socket.username = username;
 
-  const existingUser = users.find((u) => u.username === username);
-  const userInfo = {
-    username,
-    socketId: socket.id,
-    isOnline: true,
-    avatar: user.avatar, // include avatar
-  };
+    let user = await User.findOne({ username });
+    if (!user) return;
 
-  if (!existingUser) {
-    users.push(userInfo);
-  } else {
-    existingUser.socketId = socket.id;
-    existingUser.isOnline = true;
-    existingUser.avatar = user.avatar;
-  }
+    const existingUser = users.find((u) => u.username === username);
 
-  io.emit('users_list', users);
-});
+    const userInfo = {
+      username,
+      socketId: socket.id,
+      isOnline: true,
+      avatar: user.avatar,
+    };
 
+    if (!existingUser) {
+      users.push(userInfo);
+    } else {
+      existingUser.socketId = socket.id;
+      existingUser.isOnline = true;
+      existingUser.avatar = user.avatar;
+    }
+
+    io.emit('users_list', users);
+  });
 
   socket.on('send_message', (message) => {
     const recipient = users.find((u) => u.username === message.to);
@@ -95,14 +101,27 @@ io.on('connection', (socket) => {
     }
   });
 
-  socket.on('disconnect', () => {
-    users = users.filter((u) => u.socketId !== socket.id);
-    io.emit('users_list', users);
-    console.log('❌ User disconnected:', socket.id);
-  });
-
   socket.on('get_users', () => {
     io.emit('users_list', users);
+  });
+
+  
+  socket.on('error', (err) => {
+    console.error('⚠️ Socket error:', err);
+  });
+
+ 
+  socket.on('disconnect', () => {
+    console.log('⚠️ Disconnect detected:', socket.id);
+
+    setTimeout(() => {
+      const stillDisconnected = !io.sockets.sockets.get(socket.id);
+      if (stillDisconnected) {
+        users = users.filter((u) => u.socketId !== socket.id);
+        io.emit('users_list', users);
+        console.log('❌ User removed after disconnect:', socket.id);
+      }
+    }, 5000);
   });
 });
 

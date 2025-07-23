@@ -11,7 +11,6 @@ function App() {
   const [selectedUser, setSelectedUser] = useState(null);
   const location = useLocation();
 
-  // On redirect from Google, get user from URL
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const userParam = params.get("user");
@@ -27,29 +26,27 @@ function App() {
 
   useEffect(() => {
     if (user?.username) {
-      socket.emit("join", user.username); // Notify backend of the joined user
+      socket.emit("join", user.username);
     }
   }, [user]);
 
-  // Handle logout
   const handleLogout = () => {
-    socket.emit("logout", user.username); // Optionally notify the backend for logout
-    setUser(null); // Remove user from the state
-    setSelectedUser(null); // Clear selected user
-    // Optionally you can navigate to login page or home
+    socket.emit("logout", user.username);
+    setUser(null);
+    setSelectedUser(null);
   };
 
   return (
-    <div style={{ width: "100%", height: "100vh" }}>
+    <div style={{ width: "100%", height: "100vh", display: "flex", flexDirection: "column" }}>
       {!user ? (
         <div style={styles.centerContainer}>
           <div>
             <Register setUser={setUser} />
-            <GoogleLogin /> {/* This button should show when no user is logged in */}
+            <GoogleLogin />
           </div>
         </div>
       ) : (
-        <div style={{ display: "flex", height: "100vh" }}>
+        <div style={{ display: "flex", height: "100%", width: "100%" }}>
           <Sidebar onSelectUser={setSelectedUser} user={user} onLogout={handleLogout} />
           <ChatWindow selectedUser={selectedUser} user={user} />
         </div>

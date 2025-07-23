@@ -1,24 +1,41 @@
 /* Sidebar container */
 .sidebar {
-  background-color: #ededed;
-  width: 15%;
   height: 100vh;
-  border-right: 1px solid #ccc;
+  background-color: #f5f5f5;
+  border-right: 1px solid #ddd;
   display: flex;
   flex-direction: column;
-  padding: 1rem;
+  padding: 0;
+}
+
+/* User list for horizontal scrolling */
+.user-list {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f5f5f5;
+}
+
+.user-list::-webkit-scrollbar {
+  height: 8px;
+}
+
+.user-list::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.user-list::-webkit-scrollbar-track {
+  background: #f5f5f5;
 }
 
 /* User card */
 .user-card {
-  display: flex;
-  align-items: center;            /* Keep avatar and text side by side */
-  gap: 12px;
-  padding: 12px;
   background-color: #ffffff;
   border-radius: 8px;
-  margin-bottom: 12px;
-  cursor: pointer;
+  scroll-snap-align: start;
   transition: background-color 0.3s ease;
 }
 
@@ -38,7 +55,7 @@
 /* Username */
 .username {
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: #333;
 }
 
@@ -47,7 +64,6 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  margin-left: 8px;
 }
 
 .status-online {
@@ -60,7 +76,6 @@
 
 /* Typing or online text */
 .typing-indicator {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #888;
-  margin-top: 2px;
 }
