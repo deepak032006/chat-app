@@ -15,7 +15,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    failureRedirect: 'https://chat-app-zbef.vercel.app//login',
+    failureRedirect: 'https://chat-app-zbef.vercel.app/login',
     session: true,
   }),
   (req, res) => {
