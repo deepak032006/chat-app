@@ -17,8 +17,10 @@ passport.use(
         const newUser = await User.create({
           username: profile.displayName,
           email: profile.emails[0].value,
-          password: '', // Leave blank or mark user as Google-only
+          password: require('crypto').randomBytes(20).toString('hex'),
+          provider: 'google',
         });
+
         done(null, newUser);
       } catch (err) {
         done(err, null);
