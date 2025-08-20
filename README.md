@@ -60,8 +60,7 @@ npm run dev
 
 Deepak Sharma
 
-📧 Email
+📧 Email:-deepaksharma032006@gmail.com
 
-🔗 LinkedIn
+🔗 LinkedIn:-https://www.linkedin.com/in/deepak-sharma-610b81342/
 
-💻 GitHub
