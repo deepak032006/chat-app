@@ -3,7 +3,7 @@
 A full-featured real-time chat application built with the MERN stack and Socket.IO.
 The app supports private messaging, typing indicators, online user tracking, and stores chat history securely.
 
-🌐 Live Demo
+🌐 Live Demo :- https://chat-app-gwol.vercel.app/
 
 🚀 Features
 
