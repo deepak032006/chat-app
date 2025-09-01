@@ -26,14 +26,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://chat-app-25-m3vu.onrender.com",
-    "https://chat-app-gwol.vercel.app" 
-  ],
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -46,8 +39,6 @@ const io = new Server(server, {
   cors: {
     origin: [
       "http://localhost:5173",
-      "https://chat-app-25-m3vu.onrender.com",
-      "https://chat-app-gwol.vercel.app" 
     ],
     methods: ["GET", "POST"],
     credentials: true,
