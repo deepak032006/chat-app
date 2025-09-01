@@ -28,7 +28,7 @@ const Register = ({ setUser }) => {
       form.append('password', formData.password);
       if (avatar) form.append('avatar', avatar);
 
-      await axios.post('http://localhost:5000/api/auth/register', form, {
+      await axios.post('https://chat-app-23-2tzv.onrender.com/api/auth/register', form, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 

@@ -18,7 +18,7 @@ function Login({ setUser }) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', loginData);
+      const res = await axios.post('https://chat-app-23-2tzv.onrender.com/api/auth/login', loginData);
 
       setUser(res.data.user);
     } catch (err) {
