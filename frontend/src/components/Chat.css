@@ -1,6 +1,19 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* ❌ page scroll band */
+}
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+
+
+
 .chat-window {
   flex: 1; /* Take up remaining space */
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: #e5ddd5;
@@ -8,6 +21,7 @@
   background-size: contain;
   background-repeat: repeat;
   padding: 0;
+  overflow: hidden;
 }
 
 .chat-header {
@@ -21,11 +35,15 @@
   align-items: center;
   padding: 10px 16px;
   width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 
 .chat-messages {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -34,12 +52,13 @@
 
 .message {
   font-size: 1rem;
-  padding: 12px 16px;
+  padding: 10px 14px;
   border-radius: 18px;
-  max-width: 80%;
+  max-width: 78%;
   word-wrap: break-word;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
+
 
 .message-sent {
   align-self: flex-end;
@@ -57,8 +76,10 @@
   background-color: #f0f0f0;
   align-items: center;
   border-top: 1px solid #ccc;
-  position: relative;
+  position: sticky;
+  bottom: 0;
 }
+
 
 .chat-input input {
   flex: 1;
@@ -91,10 +112,11 @@
 
 .emoji-picker {
   position: absolute;
-  bottom: 60px;
-  left: 20px;
+  bottom: 70px;
+  left: 10px;
   z-index: 100;
 }
+
 
 .message-content-time {
   display: flex;
@@ -108,10 +130,11 @@
 }
 
 .message-time {
-  font-size: 0.75rem;
-  color: #666;
+  font-size: 0.7rem;
+  color: #667781;
   white-space: nowrap;
 }
+
 
 .menu-container {
   position: relative;
@@ -165,4 +188,20 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+  .message {
+    max-width: 90%;
+    font-size: 0.95rem;
+  }
+
+  .chat-header {
+    font-size: 1.1rem;
+  }
+
+  .user-avatar {
+    width: 42px;
+    height: 42px;
+  }
 }
